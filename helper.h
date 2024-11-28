@@ -351,24 +351,30 @@ BOOL parseRich(unsigned char* pFile, int offset, BOOL Verbose) {
     unsigned char rich_start[4] = { 'D', 'a', 'n', 'S' };
     unsigned char checksum_padding[4] = { 0x00 };
     unsigned char compid[8] = { 0x00 };
+    unsigned char rich_R = { 0x00 };
 
     size_t rSize = 0;
-    size_t len = 200;
+    size_t rich_dword = 0;
+    size_t len = 250;
     BOOL found = FALSE, start = FALSE;
 
     for (; rSize < len; rSize++) {
         if (pFile[128 + rSize] == rich_stub[0]) {
             if (pFile[128 + rSize + 1] == rich_stub[1] && pFile[128 + rSize + 2] == rich_stub[2] && pFile[128 + rSize + 3] == rich_stub[3]) {
                 found = TRUE;
+                rich_dword = rSize;
                 rSize += 4;
                 xor_key[0] = pFile[128 + rSize];
                 xor_key[1] = pFile[128 + rSize + 1];
                 xor_key[2] = pFile[128 + rSize + 2];
                 xor_key[3] = pFile[128 + rSize + 3];
+                rSize += 4;
+                // rSize + 4 Rich + 4 XOR key
                 break;
             }
         }
     }
+    printf("\n");
     if (found == FALSE) {
         return FALSE;
     }
@@ -376,15 +382,20 @@ BOOL parseRich(unsigned char* pFile, int offset, BOOL Verbose) {
     printf("[+] XOR Key: 0x");
     for (size_t i = 0; i < 4; i++) {
         printf("%X", xor_key[i]);
-    } printf("\n");
+    }
+    printf("\n");
+    info("Rich Header Size : %d", rSize);
 
     if (!Verbose) { printf("\n"); goto noVerbose; }
     printf("[test] Comp ID  :  compid-hex  :  meaning  :  buildid  :  count  :  productid  :  version\n");
 
     unsigned char* rich_header = (pFile + offset);
-    for (size_t j = 0; j < rSize - 4; j++) {				// size - 4, since we dont have any need for "Rich" further
+    rich_R = rich_header[rich_dword];
+    //info("RICH R at 0x%X", rich_R);
+
+    for (size_t j = 0; j < rSize - 4; j++) {				// size - 4, since we dont have any need for XOR key / no need for "Rich" as well but for debugging purpose
         rich_header[j] = rich_header[j] ^ xor_key[j % 4];
-        //printf(" 0x%X ", rich_header[j]);
+        //printf("0x%X ", rich_header[j]); if ((j + 1) % 8 == 0) printf("\n");
     }
     //printf("\n");
 
@@ -396,7 +407,8 @@ BOOL parseRich(unsigned char* pFile, int offset, BOOL Verbose) {
     } start = TRUE;
 
     compid[0] = rich_header[16];	// instead of if condition every loop, we do this
-    for (int i = 1; i < 72; i++) {
+    int i = 1;
+    for (; i < rSize - 24; i++) {   // (rSize - 8) until "Rich", minus the 16 we are adding
         compid[i % 8] = rich_header[16 + i];
         //if (i == 0) continue;
         if ((i + 1) % 8 == 0) {
@@ -404,16 +416,18 @@ BOOL parseRich(unsigned char* pFile, int offset, BOOL Verbose) {
         }
     } printf("\n\n");
 
-    if (rich_header[88] == 0x52) {
-        return TRUE;
-    }
-    else {
-        info("Rich Header may have been parsed incompletely");
-        return FALSE;
-    }
+    // Might not reach the case below, so no need for it
+    //if (rich_R == 0x52) {
+    //    return TRUE;
+    //}
+    //else {
+    //    info("Rich Header may have been parsed incompletely, rich_header[%d] should be R, got : 0x%X", rSize - 8, rich_R);
+    //    return FALSE;
+    //}
 
 noVerbose:
     return TRUE;
+
 }
 
 DWORD md5sum(HANDLE hFile) {
