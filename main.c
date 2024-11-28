@@ -176,7 +176,6 @@ noRich:
 	info("OPTIONAL HEADER			@-- 0x%X", pOptionalHeader);
 	info("Magic				@-- 0x%X", pOptionalHeader.Magic);
 	info(".text Size				@-- 0x%X", pOptionalHeader.SizeOfCode);
-	info(".text Offset			@-- 0x%X", pOptionalHeader.BaseOfCode);
 	info("Entry Point				@-- 0x%X", pOptionalHeader.AddressOfEntryPoint);
 	info("Base of Code			@-- 0x%X", pOptionalHeader.BaseOfCode);
 	info("Image Base				@-- 0x%X", pOptionalHeader.ImageBase);
