@@ -9,7 +9,7 @@ It prints different headers & their respective members (the important / interest
 <br>
 
 You can read my blog on PE Structure [here](https://reze.gitbook.io/bin/winternal/pe-structure). <br>
-I have explained the code written in my blog so you can check that out for any doubts. <br>
+I have explained the code in my blog so you can check that out for any doubts. <br>
 Or reach out to me on [Twitter](https://x.com/ZzN1NJ4).
 
 ### Example Output
