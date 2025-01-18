@@ -20,6 +20,7 @@ If you feel like I made a mistake, please reach out to me on [Twitter](https://x
 - Allow Modifying the PE (like Remove Rich Headers, etc)
 - Add some more functionality
 - Better Error Handling Messages (like when I tried checking kernel32.dll)
+- MD5 Hashes for each header (DOS, RICH, NT, FILE, OPTIONAL), this comes handy to verify the hashes against known malwares
 - Maybe a Rust GUI to do all of this
 
 ### Example Output
@@ -39,9 +40,9 @@ D:\peXtractor\x64\Debug>peXtractor.exe
 ```
 
 <br> <br> 
-Non Verbose Mode
+Verbose Mode
 ```
-peXtractor.exe DLLInjex.exe -v
+> peXtractor.exe DLLInjex.exe -v
 
 =+=+=+=+=+=+=+=+=+=+=+=+=+=+=+=+=+=+=+=+=+=+=+=+=+=+=+=+=+=+=+=+=+=
 
