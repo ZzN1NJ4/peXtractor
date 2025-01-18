@@ -10,7 +10,17 @@ It prints different headers & their respective members (the important / interest
 
 You can read my blog on PE Structure [here](https://reze.gitbook.io/bin/winternal/pe-structure). <br>
 I have explained the code in my blog so you can check that out for any doubts. <br>
-Or reach out to me on [Twitter](https://x.com/ZzN1NJ4).
+If you feel like I made a mistake, please reach out to me on [Twitter](https://x.com/ZzN1NJ4).
+
+### To Do
+
+- Display functions being imported from a DLL
+- Display information related to Relocations & stuff
+- External Resources / Bound or Forwarded Imports.
+- Allow Modifying the PE (like Remove Rich Headers, etc)
+- Add some more functionality
+- Better Error Handling Messages (like when I tried checking kernel32.dll)
+- Maybe a Rust GUI to do all of this
 
 ### Example Output
 
@@ -226,12 +236,3 @@ _______________________________________
 
 =+=+=+=+=+=+=+=+=+=+=+=+=+=+=+=+=+=+=+=+=+=+=+=+=+=+=+=+=+=+=+=+=+=
 ```
-
-### To Do
-
-- Display functions being imported from a DLL
-- Display information related to Relocations & stuff
-- External Resources / Bound or Forwarded Imports.
-- Allow Modifying the PE (like Remove Rich Headers, etc)
-- Add some more functionality
-- Maybe a Rust GUI to do all of this
